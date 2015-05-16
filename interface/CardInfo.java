@@ -1,14 +1,14 @@
 package data;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 public class CardInfo {
 	Integer ID;
 	String name;
 	String name_card_model;
-	List<Phone> phone_numbers;
-	List<SNS> sns_accounts;
+	Set<Phone> phone_numbers;
+	Set<SNS> sns_accounts;
 	String email;
 	String address;
 	Date birthday;
