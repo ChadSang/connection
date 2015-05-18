@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.Set;
 
 public class UserInfo {
-	Integer ID;
+	String _id;
 
 	Date created_date;
 	Set<Integer> card_case;
 	Set<Setting> personal_settings;
 
-	public boolean add_card(Integer id) {
+	public boolean add_card(String _id) {
 		return true;
 	}
 
