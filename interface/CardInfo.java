@@ -2,6 +2,8 @@ package data;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+
 import org.bson.Document;
 
 public class CardInfo {
@@ -14,7 +16,6 @@ public class CardInfo {
 
 	private String address;
 	private Date birthday; // yyyy-MM-dd
-
 
 	public String get_id() {
 		return _id;
@@ -107,7 +108,12 @@ public class CardInfo {
 		this._id = doc.get("_id").toString();
 		this.name = doc.get("n").toString();
 		this.name_card_model = doc.get("m").toString();
-		this.phone_numbers = (ArrayList<Phone>) doc.get("p");
+		ArrayList<Document> tmp = (ArrayList<Document>) doc.get("p");
+		Iterator<Document> iter = tmp.iterator();
+		this.phone_numbers = new ArrayList<Phone>();
+		while (iter != null && iter.hasNext()) {
+			this.phone_numbers.add(new Phone(iter.next()));
+		}
 		this.sns_accounts = (ArrayList<SNS>) doc.get("s");
 		this.email = doc.get("e").toString();
 		this.address = doc.get("a").toString();
@@ -120,7 +126,12 @@ public class CardInfo {
 		doc.put("n", name);
 		doc.put("m", name_card_model);
 
-		doc.put("p", phone_numbers);
+		ArrayList<Document> tmp = new ArrayList<Document>();
+		Iterator<Phone> iter = phone_numbers.iterator();
+		while (iter.hasNext()) {
+			tmp.add(iter.next().toDoc());
+		}
+		doc.put("p", tmp);
 		doc.put("s", sns_accounts);
 		doc.put("e", email);
 		doc.put("a", address);
@@ -141,7 +152,8 @@ public class CardInfo {
 
 	public static void main(String[] args) {
 		System.out.println("hello");
-		// CardInfo ci = new CardInfo("555004aa6d336dc5ae824300", "Chad", "sangchuang@sjtu.edu.cn");
+		// CardInfo ci = new CardInfo("555004aa6d336dc5ae824300", "Chad",
+		// "sangchuang@sjtu.edu.cn");
 		CardInfo ci = new CardInfo();
 		ci.addPhone_number(new Phone("work", "12345"));
 		ci.addPhone_number(new Phone("work", "12345"));

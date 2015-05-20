@@ -53,8 +53,8 @@ public class MongoAccessor implements DataAccessor {
 		CardInfo ci = new CardInfo();
 		ci.setName("Chad2");
 		ci.setEmail("s@sjtu");
-		// ci.addPhone_number(new Phone("work", "12345"));
-		// ci.addPhone_number(new Phone("work", "12345"));
+		ci.addPhone_number(new Phone("work", "12345"));
+		ci.addPhone_number(new Phone("home", "23456"));
 		System.out.println("begin");
 		String id = new MongoAccessor().add_name_card(ci);
 		new MongoAccessor().get_name_card(id)._print();
