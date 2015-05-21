@@ -25,59 +25,59 @@ public class CardInfo {
 		this._id = _id;
 	}
 
-	public String getName() {
+	public String get_name() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void set_name(String name) {
 		this.name = name;
 	}
 
-	public String getName_card_model() {
+	public String get_name_card_model() {
 		return name_card_model;
 	}
 
-	public void setName_card_model(String name_card_model) {
+	public void set_name_card_model(String name_card_model) {
 		this.name_card_model = name_card_model;
 	}
 
-	public ArrayList<Phone> getPhone_numbers() {
+	public ArrayList<Phone> get_phone_numbers() {
 		return phone_numbers;
 	}
 
-	public void addPhone_number(Phone phone) {
+	public void add_phone_number(Phone phone) {
 		this.phone_numbers.add(phone);
 	}
 
-	public ArrayList<SNS> getSns_accounts() {
+	public ArrayList<SNS> get_sns_accounts() {
 		return sns_accounts;
 	}
 
-	public void addSns_account(SNS sns) {
+	public void add_sns_account(SNS sns) {
 		this.sns_accounts.add(sns);
 	}
 
-	public String getEmail() {
+	public String get_email() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void set_email(String email) {
 		this.email = email;
 	}
 
-	public String getAddress() {
+	public String get_address() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void set_address(String address) {
 		this.address = address;
 	}
 
-	public Date getBirthday() {
+	public Date get_birthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void set_birthday(Date birthday) {
 		this.birthday = birthday;
 	}
 
@@ -116,14 +116,14 @@ public class CardInfo {
 		while (iter != null && iter.hasNext()) {
 			this.phone_numbers.add(new Phone(iter.next()));
 		}
-		
+
 		tmp = (ArrayList<Document>) doc.get("s");
 		iter = tmp.iterator();
 		this.sns_accounts = new ArrayList<SNS>();
 		while (iter != null && iter.hasNext()) {
 			this.sns_accounts.add(new SNS(iter.next()));
 		}
-		
+
 		this.email = doc.get("e").toString();
 		this.address = doc.get("a").toString();
 		this.birthday = (Date) doc.get("b");
@@ -141,7 +141,7 @@ public class CardInfo {
 			p_tmp.add(p_iter.next().toDoc());
 		}
 		doc.put("p", p_tmp);
-		
+
 		ArrayList<Document> s_tmp = new ArrayList<Document>();
 		Iterator<SNS> s_iter = sns_accounts.iterator();
 		while (s_iter.hasNext()) {
@@ -171,10 +171,10 @@ public class CardInfo {
 		// CardInfo ci = new CardInfo("555004aa6d336dc5ae824300", "Chad",
 		// "sangchuang@sjtu.edu.cn");
 		CardInfo ci = new CardInfo();
-		ci.setName("Chad");
-		ci.addPhone_number(new Phone("work", "12345"));
-		ci.addPhone_number(new Phone("home", "23456"));
-		ci.addSns_account(new SNS("QQ", "1218123678"));
+		ci.set_name("Chad");
+		ci.add_phone_number(new Phone("work", "12345"));
+		ci.add_phone_number(new Phone("home", "23456"));
+		ci.add_sns_account(new SNS("QQ", "1218123678"));
 		ci._print();
 		Document doc = ci.toDoc();
 		new CardInfo(doc)._print();

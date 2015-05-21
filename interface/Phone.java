@@ -2,13 +2,6 @@ package data;
 
 import org.bson.Document;
 
-class A {
-
-	public String toString() {
-		return "HELLO";
-	}
-}
-
 public class Phone {
 	String description;
 	String number;
@@ -38,8 +31,5 @@ public class Phone {
 		Phone p = new Phone("work", "15302123678");
 		Document d = p.toDoc();
 		new Phone(d)._print();
-
-		A a = new A();
-		System.out.println(a);
 	}
 }
