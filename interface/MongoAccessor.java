@@ -22,32 +22,6 @@ import static com.mongodb.client.model.Filters.*;
 
 public class MongoAccessor implements DataAccessor {
 
-	public static Document[] createSeedData() {
-
-		Document seventies = new Document();
-		seventies.put("decade", "1970s");
-		seventies.put("artist", "Debby Boone");
-		seventies.put("song", "You Light Up My Life");
-		seventies.put("weeksAtOne", 10);
-
-		Document eighties = new Document();
-		eighties.put("decade", "1980s");
-		eighties.put("artist", "Olivia Newton-John");
-		eighties.put("song", "Physical");
-		eighties.put("weeksAtOne", 10);
-
-		Document nineties = new Document();
-		nineties.put("decade", "1990s");
-		nineties.put("artist", "Mariah Carey");
-		nineties.put("song", "One Sweet Day");
-		nineties.put("weeksAtOne", 16);
-
-		// final Document[] seedData = {seventies, eighties, nineties};
-		final Document[] seedData = { seventies };
-
-		return seedData;
-	}
-
 	public static void main(String[] args) throws UnknownHostException {
 		// new MongoAccessor().get_name_card("555004aa6d336dc5ae824300")._print();
 		CardInfo ci = new CardInfo();
@@ -55,10 +29,11 @@ public class MongoAccessor implements DataAccessor {
 		ci.setEmail("s@sjtu");
 		ci.addPhone_number(new Phone("work", "12345"));
 		ci.addPhone_number(new Phone("home", "23456"));
+		ci.addSns_account(new SNS("QQ", "1218123678"));
 		System.out.println("begin");
 		String id = new MongoAccessor().add_name_card(ci);
 		new MongoAccessor().get_name_card(id)._print();
-		System.out.println("succ");
+		System.out.println("success");
 	}
 
 	private static MongoCollection<Document> get_users() {

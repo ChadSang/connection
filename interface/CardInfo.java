@@ -86,13 +86,14 @@ public class CardInfo {
 		System.out.println("_id\t" + _id);
 		System.out.println("name\t" + name);
 		System.out.println("model\t" + name_card_model);
-		System.out.println("numbers");
 
+		System.out.println("numbers");
 		java.util.Iterator<Phone> p_iter = phone_numbers.iterator();
 		while (p_iter != null && p_iter.hasNext()) {
 			p_iter.next()._print();
 		}
 
+		System.out.println("accounts");
 		java.util.Iterator<SNS> s_iter = sns_accounts.iterator();
 		while (s_iter != null && s_iter.hasNext()) {
 			s_iter.next()._print();
@@ -108,13 +109,21 @@ public class CardInfo {
 		this._id = doc.get("_id").toString();
 		this.name = doc.get("n").toString();
 		this.name_card_model = doc.get("m").toString();
+
 		ArrayList<Document> tmp = (ArrayList<Document>) doc.get("p");
 		Iterator<Document> iter = tmp.iterator();
 		this.phone_numbers = new ArrayList<Phone>();
 		while (iter != null && iter.hasNext()) {
 			this.phone_numbers.add(new Phone(iter.next()));
 		}
-		this.sns_accounts = (ArrayList<SNS>) doc.get("s");
+		
+		tmp = (ArrayList<Document>) doc.get("s");
+		iter = tmp.iterator();
+		this.sns_accounts = new ArrayList<SNS>();
+		while (iter != null && iter.hasNext()) {
+			this.sns_accounts.add(new SNS(iter.next()));
+		}
+		
 		this.email = doc.get("e").toString();
 		this.address = doc.get("a").toString();
 		this.birthday = (Date) doc.get("b");
@@ -126,13 +135,20 @@ public class CardInfo {
 		doc.put("n", name);
 		doc.put("m", name_card_model);
 
-		ArrayList<Document> tmp = new ArrayList<Document>();
-		Iterator<Phone> iter = phone_numbers.iterator();
-		while (iter.hasNext()) {
-			tmp.add(iter.next().toDoc());
+		ArrayList<Document> p_tmp = new ArrayList<Document>();
+		Iterator<Phone> p_iter = phone_numbers.iterator();
+		while (p_iter.hasNext()) {
+			p_tmp.add(p_iter.next().toDoc());
 		}
-		doc.put("p", tmp);
-		doc.put("s", sns_accounts);
+		doc.put("p", p_tmp);
+		
+		ArrayList<Document> s_tmp = new ArrayList<Document>();
+		Iterator<SNS> s_iter = sns_accounts.iterator();
+		while (s_iter.hasNext()) {
+			s_tmp.add(s_iter.next().toDoc());
+		}
+		doc.put("s", s_tmp);
+
 		doc.put("e", email);
 		doc.put("a", address);
 		doc.put("b", birthday);
@@ -155,8 +171,10 @@ public class CardInfo {
 		// CardInfo ci = new CardInfo("555004aa6d336dc5ae824300", "Chad",
 		// "sangchuang@sjtu.edu.cn");
 		CardInfo ci = new CardInfo();
+		ci.setName("Chad");
 		ci.addPhone_number(new Phone("work", "12345"));
-		ci.addPhone_number(new Phone("work", "12345"));
+		ci.addPhone_number(new Phone("home", "23456"));
+		ci.addSns_account(new SNS("QQ", "1218123678"));
 		ci._print();
 		Document doc = ci.toDoc();
 		new CardInfo(doc)._print();

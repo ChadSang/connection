@@ -6,7 +6,9 @@ import java.util.Set;
 public class UserInfo {
 	String _id;
 
-	Date created_date;
+	String email;
+	String password;
+
 	Set<Integer> card_case;
 	Set<Setting> personal_settings;
 

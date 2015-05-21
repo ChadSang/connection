@@ -3,6 +3,8 @@ package data;
 import java.util.ArrayList;
 
 public interface DataAccessor {
+	
+	
 	String add_name_card(CardInfo c); // return _id of the card
 	CardInfo get_name_card(String _id);
 	boolean set_name_card(CardInfo c);
