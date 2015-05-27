@@ -1,7 +1,10 @@
 package com.example.eleanor.connection.function;
 
+import android.content.Intent;
+
 import com.example.eleanor.connection.data.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -9,7 +12,8 @@ import java.util.Date;
  */
 public interface FunctionAccessor {
 
-    /**    Account    */
+
+/**    Account    */
 
     /**
      * register / login / logout
@@ -19,14 +23,21 @@ public interface FunctionAccessor {
     Boolean user_logout();
 
 
-
-    /**    User    */
+/**    User    */
     /**
      * get current logged user
      * get the user info being edited
      */
     UserInfo get_current_user();
     UserInfo get_editing_user();
+    /**
+     * get details
+     */
+    String get_user_id(UserInfo user);
+    String get_user_email(UserInfo user);
+    ArrayList<String> get_user_cards(UserInfo user);
+    ArrayList<String> get_user_card_case(UserInfo user);
+    ArrayList<Setting> get_user_setting(UserInfo user);
 
     /**
      * edit user
@@ -40,13 +51,15 @@ public interface FunctionAccessor {
      * edit user info
      */
     Boolean set_password(String password);
-    //Boolean delete_my_card(String _id);
-    //Boolean delete_other_card(String _id);
-    //Boolean add_setting(Setting setting);
+    Boolean add_my_card(CardInfo card);
+    Boolean add_other_card(CardInfo card);
+    Boolean delete_my_card(String _id);
+    Boolean delete_other_card(String _id);
+    Boolean add_setting(Setting setting);
 
 
 
-    /**    Card    */
+/**    Card    */
 
     /**
      * get card by id
@@ -54,6 +67,17 @@ public interface FunctionAccessor {
      */
     CardInfo get_card_info(String _id);
     CardInfo get_current_card_info();
+    /**
+     * get details
+     */
+    String get_card_id(CardInfo card);
+    String get_card_name(CardInfo card);
+    String get_card_model(CardInfo card);
+    ArrayList<Phone> get_card_phone_number(CardInfo card);
+    ArrayList<SNS> get_card_sns_account(CardInfo card);
+    String get_card_email(CardInfo card);
+    String get_card_addres(CardInfo card);
+    Date get_card_birthday(CardInfo card);
 
     /**
      * create your own card
@@ -69,17 +93,17 @@ public interface FunctionAccessor {
     /**
      *set or edit your own card
      */
-    Boolean set_name_card(String name);
-    Boolean set_model_card(String model);
-    Boolean add_phone_number_card(Phone number);
-    Boolean add_sns_account_card(SNS account);
-    Boolean set__email_card(String email);
-    Boolean set_address_card(String address);
-    Boolean set_birthday_card(Date birthday);
+    Boolean set_card_name(String name);
+    Boolean set_card_model(String model);
+    Boolean add_card_phone_number(Phone number);
+    Boolean add_card_sns_account(SNS account);
+    Boolean set_card_email(String email);
+    Boolean set_card_address(String address);
+    Boolean set_card_birthday(Date birthday);
 
-    /**
-     * add other's card
-     */
-    Boolean add_card(CardInfo card);
 
+
+/** functions */
+    Intent call_number(String number);
+    Intent send_message(String number, String msg);
 }
