@@ -1,14 +1,5 @@
 package data;
 
-/*
- * Copyright (c) 2015 ObjectLabs Corporation
- * Distributed under the MIT license - http://opensource.org/licenses/MIT
- *
- * Written with mongo-2.11.2.jar
- * Documentation: http://api.mongodb.org/java/
- * A Java class connecting to a MongoDB database given a MongoDB Connection URI.
- */
-
 import java.net.UnknownHostException;
 
 import org.bson.Document;
@@ -41,12 +32,17 @@ public class MongoAccessor implements DataAccessor {
 		MongoCollection<Document> users = get_users();
 		Document doc = users.find(
 				and(eq("e", email.toLowerCase()), eq("p", password))).first();
-		System.out.println(doc == null);
 		UserInfo res = new UserInfo(doc);
-		System.out.println(res == null); // false TODO
 		return res;
 	}
+	
+	@Override
+	public boolean delete_user(String id) {
+		// TODO
+		return true;
+	}
 
+	@SuppressWarnings("unused")
 	private static void test_card() {
 		CardInfo ci = new CardInfo();
 		ci.set_name("Chad2");
@@ -62,7 +58,8 @@ public class MongoAccessor implements DataAccessor {
 
 	public static void main(String[] args) throws UnknownHostException {
 		// MongoAccessor().get_name_card("555004aa6d336dc5ae824300")._print();
-		new MongoAccessor().verify_user("hi", "hi")._print();
+		// new MongoAccessor().verify_user("chadx@sjtu", "PASSWORD")._print();
+		new MongoAccessor().verify_user("hi@sjtu", "PASSWORD")._print();
 	}
 
 	private static MongoCollection<Document> get_cards() {

@@ -107,6 +107,10 @@ public class UserInfo {
 
 		return doc;
 	}
+	
+	public boolean valid() {
+		return _id != null && email != null && password != null;
+	}
 
 	public void _print() {
 		System.out.println("***UserInfo***");

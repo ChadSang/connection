@@ -9,6 +9,8 @@ public interface DataAccessor {
 	String add_user(String email, String password);
 
 	UserInfo verify_user(String email, String password);
+	
+	boolean delete_user(String id);
 
 	boolean set_user_info(UserInfo u);
 
@@ -27,7 +29,29 @@ public interface DataAccessor {
 
 	public static void main(String[] args) {
 		DataAccessor da = new MongoAccessor();
-		// da.get_name_card("555004aa6d336dc5ae824300");
-		System.out.println("555004aa6d336dc5ae824300".length());
+		String id = da.add_user("user@sjtu", "my_password");
+		if (id.length() == 24) {
+			System.out.printf("successfully added user %s\n", id);
+		}
+		else if (id.equals("used")){
+			System.out.printf("user already exist\n");
+			
+		}
+
+		UserInfo ui = da.verify_user("user@sjtu", "wrong_password");
+		if (ui.valid()) {
+			System.out.println("successfully log in");
+		}
+		else {
+			System.out.println("wrong password!");
+		}
+
+		ui = da.verify_user("user@sjtu", "my_password");
+		if (ui.valid()) {
+			System.out.println("successfully log in");
+		}
+		else {
+			System.out.println("wrong password!");
+		}
 	}
 }
