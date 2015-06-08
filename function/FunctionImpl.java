@@ -1,12 +1,16 @@
 package com.example.eleanor.connection.function;
 
 import android.content.Intent;
+import android.content.ContentResolver;
+import android.provider.ContactsContract;
+import android.database.Cursor;
 import android.net.Uri;
 
 import com.example.eleanor.connection.data.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Eleanor on 2015/5/23.
@@ -242,6 +246,19 @@ public class FunctionImpl implements FunctionAccessor {
         return true;
     }
 
+    @Override
+    public List<CardInfo> get_cards_by_name(String name){
+        return da.get_cards_by_name(current_user.get_id(), name);
+    }
+    @Override
+    public List<CardInfo> get_cards_by_phone_number(String phone){
+        return da.get_cards_by_phone_number(current_user.get_id(), phone);
+    }
+    @Override
+    public List<CardInfo> get_cards_by_email(String email){
+        return da.get_cards_by_email(current_user.get_id(), email);
+    }
+
 
     @Override
     public Intent call_number(String number){
@@ -262,5 +279,77 @@ public class FunctionImpl implements FunctionAccessor {
         return sms_intent;
     }
 
+    @Override
+    public Intent send_email(String address, String subject, String text){
+        Intent email_intent = new Intent(Intent.ACTION_SEND);
+        email_intent.setData(Uri.parse("mailto:"));
+        //email_intent.setType("text/plain");
+        email_intent.setType("message/rfc822");
+        String[] email_address = new String[]{address, "", };
+        email_intent.putExtra(Intent.EXTRA_EMAIL, email_address);
+        email_intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        email_intent.putExtra(Intent.EXTRA_TEXT, text);
+
+        return email_intent;
+    }
+
+    @Override
+    public List<CardInfo> get_phone_contact(ContentResolver resolver){
+        List<CardInfo> cards = new ArrayList<CardInfo>();
+        Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        while (cursor.moveToNext()) {
+            String contact_id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            String contact_name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            String phone_number = "";
+            Cursor phone_cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + contact_id, null, null);
+            while (phone_cursor.moveToNext()) {
+                phone_number = phone_cursor.getString(phone_cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            }
+
+            if (!phone_number.equals("")) {
+               // CardInfo card = da.get_name_card(da.get_card_by_phone_number(phone_number));
+                CardInfo card = new CardInfo();
+                card.set_name(contact_name);
+                card.add_phone_number(new Phone("mobile", phone_number));
+                cards.add(card);
+            }
+            if (null != phone_cursor && !phone_cursor.isClosed())
+                phone_cursor.close();
+        }
+        if (null != cursor && !cursor.isClosed())
+            cursor.close();
+        return cards;
+    }
+
+    @Override
+    public List<CardInfo> get_SIM_contact(ContentResolver resolver){
+
+        List<CardInfo> cards = new ArrayList<CardInfo>();
+        Uri uri = Uri.parse("content://icc/adn");
+        Cursor cursor = resolver.query(uri, null, null, null, null);
+        while (cursor.moveToNext()) {
+            String contact_id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            String contact_name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            String phone_number = "";
+            Cursor phone_cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + contact_id, null, null);
+            while (phone_cursor.moveToNext()) {
+                phone_number = phone_cursor.getString(phone_cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            }
+
+            if (!phone_number.equals("")) {
+                // CardInfo card = da.get_name_card(da.get_card_by_phone_number(phone_number));
+                CardInfo card = new CardInfo();
+                card.set_name(contact_name);
+                card.add_phone_number(new Phone("mobile", phone_number));
+                cards.add(card);
+            }
+            if (null != phone_cursor && !phone_cursor.isClosed())
+                phone_cursor.close();
+        }
+        if (null != cursor && !cursor.isClosed())
+            cursor.close();
+        return cards;
+
+    }
 
 }
