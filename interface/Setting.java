@@ -1,10 +1,10 @@
-package data;
+package sxh.connection.data;
 
 import org.bson.Document;
 
 public class Setting {
-	String description;
-	String value;
+	private String description;
+	private String value;
 
 	public Setting(String description, String value) {
 		this.description = description;
@@ -32,4 +32,13 @@ public class Setting {
 		Document d = p.toDoc();
 		new Setting(d)._print();
 	}
+
+
+    public String getDescription(){
+        return description;
+    }
+
+    public String getValue(){
+        return value;
+    }
 }

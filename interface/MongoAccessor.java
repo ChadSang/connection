@@ -1,6 +1,7 @@
-package data;
+package sxh.connection.data;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -38,7 +39,8 @@ public class MongoAccessor implements DataAccessor {
 	
 	@Override
 	public boolean delete_user(String id) {
-		// TODO
+		MongoCollection<Document> users = get_users();
+		users.find(eq("_id", id));
 		return true;
 	}
 
@@ -87,9 +89,20 @@ public class MongoAccessor implements DataAccessor {
 		Document doc = c.toDoc();
 		doc.remove("_id");
 		MongoCollection<Document> cards = get_cards();
+		MongoCollection<Document> users = get_users();
 		cards.insertOne(doc);
 		Document new_doc = cards.find(doc).first();
-		return new_doc.get("_id").toString();
+		String card_id = new_doc.get("_id").toString();
+		Document target_user = users.find(eq("_id", user_id)).first();
+		target_user = new UserInfo(target_user).add_my_cards(card_id).toDoc();
+		users.findOneAndUpdate(eq("_id", card_id), target_user);
+		return card_id;
+	}
+
+	@Override
+	public String add_name_card(UserInfo u, CardInfo c) {
+		add_name_card(u.get_id(), c);
+		return null;
 	}
 
 	@Override
@@ -100,21 +113,52 @@ public class MongoAccessor implements DataAccessor {
 
 	@Override
 	public boolean set_name_card(CardInfo c) {
-		get_cards().findOneAndUpdate(eq("_id", new ObjectId(c.get_id())),
-				c.toDoc());
+		get_cards().findOneAndUpdate(eq("_id", new ObjectId(c.get_id())), c.toDoc());
 		return true;
 	}
 
 	@Override
 	public boolean set_user_info(UserInfo u) {
+		get_cards().findOneAndUpdate(eq("_id", new ObjectId(u.get_id())), u.toDoc());
+		return false;
+	}
+
+	@Override
+	public boolean delete_name_card_in_my_card(String user_id, String card_id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public String add_name_card(UserInfo u, CardInfo c) {
+	public boolean delete_name_card_in_card_case(String user_id, String card_id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public CardInfo get_card_by_phone_number(String phone_number) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public ArrayList<CardInfo> get_cards_by_name(String user_id, String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<CardInfo> get_cards_by_phone_number(String user_id,
+			String phone) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<CardInfo> get_cards_by_email(String user_id, String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

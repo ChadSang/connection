@@ -1,10 +1,10 @@
-package data;
+package sxh.connection.data;
 
 import org.bson.Document;
 
 public class Phone {
-	String description;
-	String number;
+	private String description;
+	private String number;
 
 	public Phone(String description, String number) {
 		this.description = description;
@@ -32,4 +32,11 @@ public class Phone {
 		Document d = p.toDoc();
 		new Phone(d)._print();
 	}
+
+    public String getDescription(){
+        return description;
+    }
+    public String getNumber(){
+        return number;
+    }
 }

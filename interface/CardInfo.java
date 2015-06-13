@@ -1,4 +1,4 @@
-package data;
+package sxh.connection.data;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +15,8 @@ public class CardInfo {
 	private String email;
 
 	private String address;
+	private String corporation;
+
 	private Date birthday; // yyyy-MM-dd
 
 	public String get_id() {
@@ -65,6 +67,14 @@ public class CardInfo {
 		this.email = email;
 	}
 
+	public String get_corporation() {
+		return corporation;
+	}
+
+	public void set_corporation(String corporation) {
+		this.corporation = corporation;
+	}
+
 	public String get_address() {
 		return address;
 	}
@@ -101,6 +111,7 @@ public class CardInfo {
 
 		System.out.println("email\t" + email);
 		System.out.println("address\t" + address);
+		System.out.println("corporation\t" + corporation);
 		System.out.println("birthday\t" + birthday);
 	}
 
@@ -126,6 +137,7 @@ public class CardInfo {
 
 		this.email = doc.get("e").toString();
 		this.address = doc.get("a").toString();
+		this.corporation = doc.get("c").toString();
 		this.birthday = (Date) doc.get("b");
 	}
 
@@ -151,6 +163,7 @@ public class CardInfo {
 
 		doc.put("e", email);
 		doc.put("a", address);
+		doc.put("c", corporation);
 		doc.put("b", birthday);
 		return doc;
 	}
@@ -163,6 +176,7 @@ public class CardInfo {
 		sns_accounts = new ArrayList<SNS>();
 		email = "";
 		address = "";
+		corporation = "";
 		birthday = new Date();
 	}
 

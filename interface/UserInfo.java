@@ -1,4 +1,4 @@
-package data;
+package sxh.connection.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,7 +13,15 @@ public class UserInfo {
 
 	ArrayList<String> my_cards;
 	ArrayList<String> card_case;
+
 	ArrayList<Setting> personal_settings;
+
+    /**
+     * need to add
+     *
+     * file system (ask hesijia)
+     *
+     */
 
 	public UserInfo(String email, String password) {
 		this._id = "";
@@ -45,8 +53,9 @@ public class UserInfo {
 		return my_cards;
 	}
 
-	public void add_my_cards(String card_id) {
+	public UserInfo add_my_cards(String card_id) {
 		this.my_cards.add(card_id);
+		return this;
 	}
 
 	public ArrayList<String> get_card_case() {

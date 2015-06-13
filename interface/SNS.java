@@ -1,10 +1,10 @@
-package data;
+package sxh.connection.data;
 
 import org.bson.Document;
 
 public class SNS {
-	String description;
-	String name;
+	private String description;
+	private String name;
 
 	public SNS(String description, String name) {
 		this.description = description;
@@ -32,4 +32,13 @@ public class SNS {
 		Document d = p.toDoc();
 		new SNS(d)._print();
 	}
+
+
+    public String getDescription(){
+        return description;
+    }
+    public String getName(){
+        return name;
+    }
+
 }
