@@ -1,0 +1,7 @@
+exchange 里有一个二维码和一个扫描按钮，
+
+exchange_camera是摄像头界面不用管
+
+
+AndroidManifest里面有二维码的两个Activity和一些权限获取
+

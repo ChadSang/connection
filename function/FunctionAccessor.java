@@ -1,9 +1,10 @@
-package com.example.eleanor.connection.function;
+package sxh.connection.function;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 
-import com.example.eleanor.connection.data.*;
+import sxh.connection.data.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +42,8 @@ public interface FunctionAccessor {
     ArrayList<String> get_user_card_case(UserInfo user);
     ArrayList<Setting> get_user_setting(UserInfo user);
 
+    String get_setting_background_color(UserInfo user);
+
     /**
      * edit user
      * assure / cancel user operation
@@ -57,7 +60,7 @@ public interface FunctionAccessor {
     Boolean add_other_card(CardInfo card);
     Boolean delete_my_card(String _id);
     Boolean delete_other_card(String _id);
-    Boolean add_setting(Setting setting);
+    Boolean set_setting(SettingDescription description, String value);
 
 
 
@@ -81,6 +84,12 @@ public interface FunctionAccessor {
     String get_card_addres(CardInfo card);
     Date get_card_birthday(CardInfo card);
 
+    String get_wechat(CardInfo card);
+    String get_instagram(CardInfo card);
+    String get_facebook(CardInfo card);
+    String get_twitter(CardInfo card);
+    String get_weibo(CardInfo card);
+
     /**
      * create your own card
      * edit your own card
@@ -98,7 +107,8 @@ public interface FunctionAccessor {
     Boolean set_card_name(String name);
     Boolean set_card_model(String model);
     Boolean add_card_phone_number(Phone number);
-    Boolean add_card_sns_account(SNS account);
+    Boolean set_card_sns_accout(SNSDescription description, String name);
+    Boolean set_card_sns_account(String description, String name);
     Boolean set_card_email(String email);
     Boolean set_card_address(String address);
     Boolean set_card_birthday(Date birthday);
@@ -110,6 +120,12 @@ public interface FunctionAccessor {
     List<CardInfo> get_cards_by_phone_number(String phone);
     List<CardInfo> get_cards_by_email(String email);
 
+    /**
+     * sort
+     */
+    List<CardInfo> sort_cards_by_name(List<CardInfo> cards);
+    List<CardInfo> sort_cards_by_email(List<CardInfo> cards);
+
 
 /** functions */
     Intent call_number(String number);
@@ -117,4 +133,6 @@ public interface FunctionAccessor {
     Intent send_email(String address, String subject, String text);
     List<CardInfo> get_phone_contact(ContentResolver resolver);
     List<CardInfo> get_SIM_contact(ContentResolver resolver);
+
+    Bitmap get_qrcode();
 }

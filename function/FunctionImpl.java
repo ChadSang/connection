@@ -1,14 +1,22 @@
-package com.example.eleanor.connection.function;
+package sxh.connection.function;
 
 import android.content.Intent;
 import android.content.ContentResolver;
+import android.graphics.Bitmap;
 import android.provider.ContactsContract;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.example.eleanor.connection.data.*;
+import com.google.zxing.WriterException;
 
+import sxh.connection.data.*;
+import sxh.connection.function.SNSDescription;
+import sxh.connection.function.zxing.encoding.EncodingHandler;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +84,31 @@ public class FunctionImpl implements FunctionAccessor {
         return user.get_personal_settings();
     }
 
+    String find_setting_value(UserInfo user, String setting){
+        ArrayList<Setting>  settingss = user.get_personal_settings();
+        for (int i = 0; i < settingss.size(); i++){
+            if (settingss.get(i).getDescription().equals(setting)){
+                return settingss.get(i).getValue();
+            }
+        }
+        return null;
+    }
+    int find_setting_index(UserInfo user, String setting){
+        ArrayList<Setting>  settingss = user.get_personal_settings();
+        for (int i = 0; i < settingss.size(); i++){
+            if (settingss.get(i).getDescription().equals(setting)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public String get_setting_background_color(UserInfo user){
+        return find_setting_value(user, SettingDescription.BACKGROUNDCOLOR.toString());
+    }
+
+
     @Override
     public Boolean edit_user(){
         editing_user = current_user;
@@ -118,19 +151,27 @@ public class FunctionImpl implements FunctionAccessor {
     }
     @Override
     public Boolean delete_my_card(String _id){
-        return true;
+       // return da.delete_name_card_in_my_card(_id);
+        return null;
     }
     @Override
     public Boolean delete_other_card(String _id){
-        return true;
+        //return da.delete_name_card_in_card_case(_id);
+        return null;
     }
+
+
+
     @Override
-    public Boolean add_setting(Setting setting){
-        if (current_user != null){
+    public Boolean set_setting(SettingDescription description, String value){
+        int index = find_setting_index(current_user, description.toString());
+        Setting setting = new Setting(description.toString(), value);
+        if (index >= 0){
+            current_user.get_personal_settings().set(index, setting);
+        }else {
             current_user.add_personal_settings(setting);
-            return true;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -177,6 +218,51 @@ public class FunctionImpl implements FunctionAccessor {
     @Override
     public Date get_card_birthday(CardInfo card){
         return card.get_birthday();
+    }
+
+    String get_sns_name(CardInfo card, String description){
+        ArrayList<SNS>  snses = card.get_sns_accounts();
+        for (int i = 0; i < snses.size(); i++){
+            if (snses.get(i).getDescription().equals(description)){
+                return snses.get(i).getName();
+            }
+        }
+        return null;
+    }
+    int get_sns_index(CardInfo card, String description){
+        ArrayList<SNS>  snses = card.get_sns_accounts();
+        for (int i = 0; i < snses.size(); i++){
+            if (snses.get(i).getDescription().equals(description)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public String get_wechat(CardInfo card){
+        String name = get_sns_name(card, SNSDescription.WECHAT.toString());
+        return name;
+    }
+    @Override
+    public String get_instagram(CardInfo card){
+        String name = get_sns_name(card, SNSDescription.INSTAGRAM.toString());
+        return name;
+    }
+    @Override
+    public String get_facebook(CardInfo card){
+        String name = get_sns_name(card, SNSDescription.FACEBOOK.toString());
+        return name;
+    }
+    @Override
+    public String get_twitter(CardInfo card){
+        String name = get_sns_name(card, SNSDescription.TWITTER.toString());
+        return name;
+    }
+    @Override
+    public String get_weibo(CardInfo card){
+        String name = get_sns_name(card, SNSDescription.WEIBO.toString());
+        return name;
     }
 
     @Override
@@ -226,8 +312,25 @@ public class FunctionImpl implements FunctionAccessor {
         return true;
     }
     @Override
-    public Boolean add_card_sns_account(SNS account){
-        current_card.add_sns_account(account);
+    public Boolean set_card_sns_accout(SNSDescription description, String name){
+        int index = get_sns_index(current_card, description.toString());
+        SNS account = new SNS(description.toString(), name);
+        if (index >= 0){
+            current_card.get_sns_accounts().set(index, account);
+        }else {
+            current_card.add_sns_account(account);
+        }
+        return true;
+    }
+    @Override
+    public Boolean set_card_sns_account(String description, String name){
+        int index = get_sns_index(current_card, description);
+        SNS account = new SNS(description, name);
+        if (index >= 0){
+            current_card.get_sns_accounts().set(index, account);
+        }else {
+            current_card.add_sns_account(account);
+        }
         return true;
     }
     @Override
@@ -248,15 +351,41 @@ public class FunctionImpl implements FunctionAccessor {
 
     @Override
     public List<CardInfo> get_cards_by_name(String name){
-        return da.get_cards_by_name(current_user.get_id(), name);
+        //List<CardInfo> cards = da.get_cards_by_name(current_user.get_id(), name);
+        //return sort_cards_by_name(cards);
+        return null;
     }
     @Override
     public List<CardInfo> get_cards_by_phone_number(String phone){
-        return da.get_cards_by_phone_number(current_user.get_id(), phone);
+        //return da.get_cards_by_phone_number(current_user.get_id(), phone);
+        return null;
     }
     @Override
     public List<CardInfo> get_cards_by_email(String email){
-        return da.get_cards_by_email(current_user.get_id(), email);
+        //List<CardInfo> cards = da.get_cards_by_email(current_user.get_id(), email);
+        //return sort_cards_by_email(cards);
+        return null;
+
+    }
+
+    @Override
+    public List<CardInfo> sort_cards_by_name(List<CardInfo> cards){
+        Collections.sort(cards, new Comparator<CardInfo>() {
+            @Override
+            public int compare(CardInfo lhs, CardInfo rhs) {
+                return lhs.get_name().compareTo(rhs.get_name());
+            }
+        });
+        return cards;
+    }
+    public List<CardInfo> sort_cards_by_email(List<CardInfo> cards){
+        Collections.sort(cards, new Comparator<CardInfo>() {
+            @Override
+            public int compare(CardInfo lhs, CardInfo rhs) {
+                return lhs.get_email().compareTo(rhs.get_email());
+            }
+        });
+        return cards;
     }
 
 
@@ -350,6 +479,20 @@ public class FunctionImpl implements FunctionAccessor {
             cursor.close();
         return cards;
 
+    }
+
+    @Override
+    public Bitmap get_qrcode(){
+        Bitmap qrcode_map = null;
+        try {
+            //qrcode_map = EncodingHandler.createQRCode(current_user.get_id(), 350);
+            qrcode_map = EncodingHandler.createQRCode("test", 350);
+        }catch (WriterException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return qrcode_map;
     }
 
 }
