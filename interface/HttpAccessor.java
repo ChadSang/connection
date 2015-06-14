@@ -11,7 +11,7 @@ import com.mongodb.client.MongoDatabase;
 
 import static com.mongodb.client.model.Filters.*;
 
-public class MongoAccessor implements DataAccessor {
+public class HttpAccessor implements DataAccessor {
 
 	@Override
 	public String add_user(String email, String password) {
@@ -51,8 +51,8 @@ public class MongoAccessor implements DataAccessor {
 		ci.add_phone_number(new Phone("home", "23456"));
 		ci.add_sns_account(new SNS("QQ", "1218123678"));
 		System.out.println("begin");
-		String id = new MongoAccessor().add_name_card("", ci);
-		new MongoAccessor().get_name_card(id)._print();
+		String id = new HttpAccessor().add_name_card("", ci);
+		new HttpAccessor().get_name_card(id)._print();
 		System.out.println("success");
 	}
 
@@ -74,6 +74,10 @@ public class MongoAccessor implements DataAccessor {
 	}
 
 	private static MongoCollection<Document> get_users() {
+		// MongoLabDB db = new MongoLabDB("hci_connection",
+		// "gaxTO-7B0dmSkEV3wtNsqFWGB1jVjnhi");
+		// return db.getCollection("users");
+
 		MongoClientURI uri = new MongoClientURI(
 				"mongodb://hci:21543879@ds057000.mongolab.com:57000/hci_connection");
 		@SuppressWarnings("resource")

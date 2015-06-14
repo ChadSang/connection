@@ -30,6 +30,7 @@ public interface DataAccessor {
 	boolean set_name_card(CardInfo c);
 	
     boolean delete_name_card_in_my_card(String user_id, String card_id);
+
     boolean delete_name_card_in_card_case(String user_id, String card_id);
 
     CardInfo get_card_by_phone_number(String phone_number);

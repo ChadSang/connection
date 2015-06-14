@@ -16,12 +16,13 @@ public class UserInfo {
 
 	ArrayList<Setting> personal_settings;
 
-    /**
-     * need to add
-     *
-     * file system (ask hesijia)
-     *
-     */
+	/**
+	 * need to add
+	 *
+	 * file system (ask hesijia)
+	 *
+	 */
+	ArrayList<Label> my_labels;
 
 	public UserInfo(String email, String password) {
 		this._id = "";
@@ -62,7 +63,7 @@ public class UserInfo {
 		return card_case;
 	}
 
-	public void add_card_case(String card_id) {
+	public void add_card_case(String card_id, String relation) {
 		this.card_case.add(card_id);
 	}
 
@@ -84,7 +85,8 @@ public class UserInfo {
 
 	@SuppressWarnings("unchecked")
 	public UserInfo(Document doc) {
-		if (doc == null) return;
+		if (doc == null)
+			return;
 		this._id = doc.get("_id").toString();
 		this.email = doc.get("e").toString();
 		this.password = doc.get("p").toString(); // TODO security
@@ -116,7 +118,7 @@ public class UserInfo {
 
 		return doc;
 	}
-	
+
 	public boolean valid() {
 		return _id != null && email != null && password != null;
 	}
@@ -150,6 +152,8 @@ public class UserInfo {
 		System.out.println("begin");
 		UserInfo ui = new UserInfo();
 		ui.set_password("PASSWORD");
+		ui.add_card_case("198ruf", "friend");
+		ui.add_card_case("1e;fq98ruf", "boss");
 		ui.add_personal_settings(new Setting("size", "20"));
 		ui.add_personal_settings(new Setting("font", "Monaco"));
 		ui._print();
